@@ -5,7 +5,7 @@ node {
     }
 
     stage('Build') {
-        docker.image('php:8.2-cli').inside('--entrypoint="" -u root') {
+        docker.image('php:8.4-cli').inside('--entrypoint="" -u root') {
             sh '''
             apt-get update
             apt-get install -y git unzip libzip-dev curl
@@ -32,13 +32,13 @@ node {
         sshagent(credentials: ['ssh-prod']) {
             sh '''
             mkdir -p ~/.ssh
-            ssh-keyscan -H $PROD_HOST >> ~/.ssh/known_hosts
+            ssh-keyscan -H $PROD_HOST2 >> ~/.ssh/known_hosts
 
             rsync -rav --delete \
                 --exclude=.env \
                 --exclude=storage \
                 --exclude=.git \
-                ./ nixie@$PROD_HOST:/home/nixie/m6/larajenkins/
+                ./ root@$PROD_HOST2:/var/www/larajenkins/
             '''
         }
     }
