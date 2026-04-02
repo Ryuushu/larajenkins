@@ -32,13 +32,13 @@ node {
         sshagent(credentials: ['ssh-prod']) {
             sh '''
             mkdir -p ~/.ssh
-            ssh-keyscan -H $PROD_HOST2 >> ~/.ssh/known_hosts
+            ssh-keyscan -H $PROD_HOST >> ~/.ssh/known_hosts
 
             rsync -rav --delete \
                 --exclude=.env \
                 --exclude=storage \
                 --exclude=.git \
-                ./ root@$PROD_HOST2:/var/www/larajenkins/
+                ./ root@$PROD_HOST:/var/www/larajenkins/
             '''
         }
     }
